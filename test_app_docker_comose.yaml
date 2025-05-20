@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  test_postgres_compose:
+    image: postgres:14
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=pswd
+
+  test_app_compose:
+    image: test-app:1.0
+    container_name: django-app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - test_postgres_compose
+    environment:
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=pswd
+      - DATABASE_HOST=postgres-db
+      - DATABASE_PORT=5432
+
+      
+volumes:
+  pgdata:
+    driver: local
