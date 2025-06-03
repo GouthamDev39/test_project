@@ -6,6 +6,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
 
     steps:
@@ -13,3 +16,11 @@ jobs:
         uses: actions/checkout@v4
       - name: test_stuffs
         run: echo "Tested"
+      - name: Insatll python version ${{ matrix.python-version }}
+        uses: actions/seup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Update pip
+        run: python -m pip insatll --upgrade pip
+      - name: Insatll dependencies
+        run: pip insatll -r requirements.txt
