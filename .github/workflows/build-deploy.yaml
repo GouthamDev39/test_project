@@ -54,8 +54,8 @@ jobs:
 #cd
 
   deploy:
-  needs: ["build"]
-  runs-on: ubuntu-latest
+    needs: ["build"]
+    runs-on: ubuntu-latest
 
   steps:
     - name: Deploy to EC2
