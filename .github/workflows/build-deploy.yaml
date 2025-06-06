@@ -72,8 +72,5 @@ jobs:
 
           # Run SSH command
           ssh -i ~/.ssh/id_rsa ${USER}@${HOST} << 'EOF'
-            echo "Current directory: $(pwd)"
-            touch successful
-            echo "Listing home directory:"
-            ls -la ~
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/test_project:latest
           EOF
