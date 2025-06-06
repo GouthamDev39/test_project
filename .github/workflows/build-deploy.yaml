@@ -52,7 +52,6 @@ jobs:
           cache-to: type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
 
 #cd
-jobs:
   deploy:
     needs: ["build"]
     runs-on: ubuntu-latest
