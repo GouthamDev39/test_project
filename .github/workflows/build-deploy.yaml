@@ -72,5 +72,6 @@ jobs:
 
           # Run SSH command
           ssh -i ~/.ssh/id_rsa ${USER}@${HOST} << 'EOF'
+            
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/test_project:latest
           EOF
