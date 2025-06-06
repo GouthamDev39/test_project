@@ -52,29 +52,28 @@ jobs:
           cache-to: type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
 
 #cd
+  deploy:
+    needs: ["build"]
+    runs-on: ubuntu-latest
 
-deploy:
-  needs: ["build"]
-  runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-  steps:
-    - name: Deploy to EC2
-      env:
-        PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-        HOST: ${{ secrets.EC2_HOST }}
-        USER: ${{ secrets.EC2_USER }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+          # Disable strict host key checking
+          echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
 
-        # Disable strict host key checking
-        echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-
-        # Run SSH command
-        ssh -i ~/.ssh/id_rsa ${USER}@${HOST} << 'EOF'
-          echo "Current directory: $(pwd)"
-          touch successful
-          echo "Listing home directory:"
-          ls -la ~
-        EOF
+          # Run SSH command
+          ssh -i ~/.ssh/id_rsa ${USER}@${HOST} << 'EOF'
+            echo "Current directory: $(pwd)"
+            touch successful
+            echo "Listing home directory:"
+            ls -la ~
+          EOF
