@@ -52,6 +52,7 @@ jobs:
           cache-to: type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
 
 #cd
+
   deploy:
     needs: ["build"]
     runs-on: ubuntu-latest
@@ -63,8 +64,10 @@ jobs:
           HOST: ${{ secrets.EC2_HOST }}
           USER: ${{ secrets.EC2_USER }}
         run: |
-          echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
-          ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
+
+          mkdir -p .ssh
+          echo "$PRIVATE_KEY" > id_ira.pem
+          ssh -i id_ira.pem ${USER}@${HOST}
           echo "Current directory: $(pwd)"
           touch succesful
           echo "Listing home directory:"
