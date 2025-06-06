@@ -51,27 +51,22 @@ jobs:
           cache-from: type=local,src=${{ runner.temp }}/.buildx-cache
           cache-to: type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
 
+#cd
+jobs:
   deploy:
-    name: Deploy to EC2
+    needs: ["build"]
     runs-on: ubuntu-latest
-    needs: build
 
     steps:
-      - name: Set up SSH key
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-      - name: Test Connection
-        run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          echo "Connection tested" >> test_run
-      # - name: Pull and run Docker image on EC2
-      #   run: |
-      #     ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-      #       docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/test_project:latest
-      #       docker stop test_project || true
-      #       docker rm test_project || true
-      #       docker run -d --name test_project -p 80:80 ${{ secrets.DOCKER_HUB_USERNAME }}/test_project:latest
-      #     EOF
+          echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
+          ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
+          echo "Current directory: $(pwd)"
+          touch succesful
+          echo "Listing home directory:"
+          ls -la ~
