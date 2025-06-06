@@ -76,6 +76,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/test_project:latest
             sleep 2
             docker run --name test_app -d -p 80:8000  batman39/test_project
+            sleep 10
             curl loclhost
 
           EOF
