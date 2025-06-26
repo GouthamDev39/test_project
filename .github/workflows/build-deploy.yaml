@@ -43,7 +43,10 @@ jobs:
           whoami
           rm file || echo "done"
           echo "The ${{ github.repository }} repository has been cloned to the runner."
-          git clone {{ github.repository }}
-          touch file 
+         # git clone http://{{ github.repository }}.com
           
-      
+      - name: Copy repo to EC2
+        run: |
+          scp -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/my-app
+          touch file 
+
