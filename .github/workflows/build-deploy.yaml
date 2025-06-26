@@ -39,12 +39,17 @@ jobs:
 
       - name: Connect to EC2 and run command
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          whoami
-          rm file || echo "done"
-          echo "The ${{ github.repository }} repository has been cloned to the runner."
-         # git clone http://{{ github.repository }}.com
-          
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+            whoami
+            rm -f ~/file || echo "file not found"
+            if [ -d "/home/${{ secrets.EC2_USER }}/my-app" ]; then
+              echo "Directory exists. Deleting..."
+              rm -rf /home/${{ secrets.EC2_USER }}/my-app
+            else
+              echo "Directory does not exist."
+            fi
+          EOF
+
       - name: Copy repo to EC2
         run: |
           scp -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/my-app
