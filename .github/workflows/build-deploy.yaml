@@ -40,5 +40,6 @@ jobs:
       - name: Connect to EC2 and run command
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo 'Connected to EC2 via GitHub Actions!'"
+          whoami
      
 
