@@ -42,7 +42,7 @@ jobs:
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
             whoami
             rm file || echo "file not found"
-            ls /home/${{ secrets.EC2_USER }}/bin
+            ls /home/${{ secrets.EC2_USER }}/bin || echo "File not found"
             ls /home/ec2-user/bin
 
       # - name: Copy repo to EC2
