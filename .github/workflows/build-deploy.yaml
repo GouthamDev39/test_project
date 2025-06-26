@@ -25,10 +25,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Dockerize the app
-        run: | 
-          docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-          docker images
+      # - name: Dockerize the app
+      #   run: | 
+      #     docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      #     docker images
 
       - name: Setup SSH key
         run: |
@@ -37,12 +37,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Connect to EC2 and run command
+      # - name: Connect to EC2 and run command
+      #   run: |
+      #     ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+      #       whoami
+      #       rm file || echo "done"
+      #       touch file
+      #     EOF
+
+      - name: Test Connection
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo 'Connected to EC2 via GitHub Actions!'" << 'EOF'
-            whoami
-            rm file || echo "done"
-            touch file
-          EOF
-     
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          echo "Connection tested" >> test_run
 
