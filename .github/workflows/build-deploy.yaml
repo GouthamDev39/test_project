@@ -37,16 +37,17 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Connect to EC2 and run command
+      - name: Connect to EC2 and run commands
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
             whoami
-            rm file || echo "file not found"
-            ls /home/${{ secrets.EC2_USER }}/bin || echo "File not found"
-            ls /home/ec2-user/bin
+            rm -f /home/${{ secrets.EC2_USER }}/file || echo "file not found"
+            /home/${{ secrets.EC2_USER }}/bin/check.sh
+          EOF
 
-      # - name: Copy repo to EC2
-      #   run: |
-      #     scp -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/my-app
-      #     touch file 
+
+      - name: Copy repo to EC2
+        run: |
+          scp -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/my-app
+          touch file 
 
