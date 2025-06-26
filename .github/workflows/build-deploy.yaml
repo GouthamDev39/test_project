@@ -48,8 +48,11 @@ jobs:
       - name: Remove .git before copying
         run: rm -rf .git
 
-      - name: Copy repo to EC2
+      - name: Ensure target directory exists on EC2
         run: |
-          scp -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/my-app
-          touch file 
+            ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "mkdir -p /home/${{ secrets.EC2_USER }}/my-app"
+
+      - name: Copy repo to EC2 (excluding .git)
+        run: |
+          rsync -avz --exclude='.git' -e "ssh -i ~/.ssh/id_rsa" ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/my-app
 
