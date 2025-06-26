@@ -45,6 +45,8 @@ jobs:
             /home/${{ secrets.EC2_USER }}/bin/check.sh
           EOF
 
+      - name: Remove .git before copying
+        run: rm -rf .git
 
       - name: Copy repo to EC2
         run: |
