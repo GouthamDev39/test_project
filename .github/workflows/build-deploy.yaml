@@ -37,16 +37,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      # - name: Connect to EC2 and run command
-      #   run: |
-      #     ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-      #       whoami
-      #       rm file || echo "done"
-      #       touch file
-      #     EOF
-
-      - name: Test Connection
+      - name: Connect to EC2 and run command
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          echo "Connection tested" >> test_run
+          whoami
+          rm file || echo "done"
+          touch file
+          
+
+      # - name: Test Connection
+      #   run: |
+      #     ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+      #     echo "Connection tested" >> test_run
 
