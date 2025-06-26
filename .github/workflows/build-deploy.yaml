@@ -29,7 +29,9 @@ jobs:
         run: |
           python3 manage.py migrate
           python3 manage.py makemigrations
-          python3 manage.py runserver 
+          nohup python3 manage.py runserver &
+          curl localhost
+          exit
         
       
 
