@@ -39,16 +39,10 @@ jobs:
 
       - name: Connect to EC2 and run command
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
             whoami
-            rm -f ~/file || echo "file not found"
-            if [ -d "/home/${{ secrets.EC2_USER }}/my-app" ]; then
-              echo "Directory exists. Deleting..."
-              rm -rf /home/${{ secrets.EC2_USER }}/my-app
-            else
-              echo "Directory does not exist."
-            fi
-          EOF
+            rm file || echo "file not found"
+            /$HOME/bin/check.sh
 
       - name: Copy repo to EC2
         run: |
