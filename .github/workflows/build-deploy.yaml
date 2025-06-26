@@ -43,7 +43,7 @@ jobs:
             whoami
             rm file || echo "file not found"
             ls /home/${{ secrets.EC2_USER }}/bin
-
+            ls /home/ec2-user/bin
 
       # - name: Copy repo to EC2
       #   run: |
