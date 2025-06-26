@@ -26,7 +26,8 @@ jobs:
           pip install -r requirements.txt
       
       - name: Dockerize the app
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-        run: docker images
+        run: | 
+          docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+          docker images
 
 
