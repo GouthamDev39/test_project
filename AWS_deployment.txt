@@ -6,21 +6,21 @@ Step 1: Launch instance
     Go to AWS instances
     Launch
     Use AWS AMI
-    Create New Key Pair (.ppk format if you are using putty to ssh), save the pair key
-    I network settings set Firewall(Security Group)
-            - Allow SSH(22)
-            - Allow HTTP(80)
+    Create New Key Pair ( download in .ppk format if you are using putty to ssh), save the pair key
+    In network settings set Firewall(Security Group)
+            - Allow SSH(22) #to access via ssh
+            - Allow HTTP(80) #To test final deployment from browser
     Launch instance
 
 Understatnding SSH keys:- https://www.ssh.com/academy/ssh-keys
 
-Understatnding securith groups: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+Understatnding security groups: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
 
 
 Step 2: Connect to server from SSH 
     Get the public ip of the server
     Via CMD
-        ssh -i /path/key-pair-name.pem instance-user-name@instance-public-ip [untested]
+        ssh -i /path/key-pair-name.pem instance-user-name@instance-public-ip 
     Via Putty [tested]
         Download and start Putty https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
         In session provide necessary details
@@ -54,8 +54,9 @@ Step 6: Setting up the app
         pip install -r requirements.txt
         python manage.py migrate #These are Django specific commands for database population
         python manage.py makemigrations
-        python runserver #runs the server
+        python manage.py runserver 0.0.0.0:8000 #runs the server
 
         Verify the deployment via logging into public IP of server
 
-** The documented provided has some extra steps, we'll be following them next time
+*The documented provided has some extra steps, we'll be following them next time
+
