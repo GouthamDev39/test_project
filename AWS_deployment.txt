@@ -1,0 +1,61 @@
+Deploying code on AWS - Manual way
+
+docs*:- https://samuelnnanna71.medium.com/hosting-a-static-website-on-aws-using-ec2-a-step-by-step-guide-1fb3ded99796
+
+Step 1: Launch instance
+    Go to AWS instances
+    Launch
+    Use AWS AMI
+    Create New Key Pair (.ppk format if you are using putty to ssh), save the pair key
+    I network settings set Firewall(Security Group)
+            - Allow SSH(22)
+            - Allow HTTP(80)
+    Launch instance
+
+Understatnding SSH keys:- https://www.ssh.com/academy/ssh-keys
+
+Understatnding securith groups: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+
+
+Step 2: Connect to server from SSH 
+    Get the public ip of the server
+    Via CMD
+        ssh -i /path/key-pair-name.pem instance-user-name@instance-public-ip [untested]
+    Via Putty [tested]
+        Download and start Putty https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+        In session provide necessary details
+            hostname: instance-user-name@instance-public-dns-name
+            port: 22
+        In the Category pane, expand Connection, SSH, and Auth. Choose Credentials
+        Browse and select the downloaded keypair (.ppk) format
+        Open
+
+Connect via SSH Clinet :- https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html
+            Via Putty  :- https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-from-windows.html
+
+Step 3: Prefrom some pre-checks
+    python3 -V #checks python version
+    git -v #checks git version maybe not installed yet
+    ls -la #Check .ssh and cat authorized file inside
+
+Step 4: Install and update packages #https://dev.to/betpido/what-is-a-package-manager-4cdm
+    sudo yum update && sudo yum upgrade -y #Perform updates this will only work in AWS EC2
+    sudo yum install git #if git is not installed
+
+Step 5: Cloning the project
+    git clone https://github.com/GouthamDev39/test_project
+    ls -lrth #verify the clone
+
+Step 6: Setting up the app
+    Setup a python environment
+        python3 -m venv myenv #https://www.geeksforgeeks.org/create-virtual-environment-using-venv-python/
+        source myenv/bin/activate
+        Navigate into directory conatining requirements.txt
+        pip install -r requirements.txt
+        python manage.py migrate #These are Django specific commands for database population
+        python manage.py makemigrations
+        python runserver #runs the server
+
+        Verify the deployment via logging into public IP of server
+
+** The documented provided has some extra steps, we'll be following them next time
