@@ -20,7 +20,7 @@ Understatnding security groups: https://docs.aws.amazon.com/vpc/latest/userguide
 Step 2: Connect to server from SSH 
     Get the public ip of the server
     Via CMD
-        To get hostname :- hostname
+        To get hostname command :- hostname
         ssh -i /path/key-pair-name.pem instance-user-name@instance-public-ip #ec2-user@xx.xxx.xx.xx
     Via Putty [tested]
         Download and start Putty https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
@@ -29,6 +29,8 @@ Step 2: Connect to server from SSH
             port: 22
         In the Category pane, expand Connection, SSH, and Auth. Choose Credentials
         Browse and select the downloaded keypair (.ppk) format
+        If downloaded keypair is in .pem format change it to .ppk by following comamand 
+            puttygen webserver_key.pem -o webserver_key.ppk
         Open
 
 Connect via SSH Clinet :- https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html
