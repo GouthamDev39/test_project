@@ -20,11 +20,12 @@ Understatnding security groups: https://docs.aws.amazon.com/vpc/latest/userguide
 Step 2: Connect to server from SSH 
     Get the public ip of the server
     Via CMD
-        ssh -i /path/key-pair-name.pem instance-user-name@instance-public-ip 
+        To get hostname :- hostname
+        ssh -i /path/key-pair-name.pem instance-user-name@instance-public-ip #ec2-user@xx.xxx.xx.xx
     Via Putty [tested]
         Download and start Putty https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
         In session provide necessary details
-            hostname: instance-user-name@instance-public-dns-name
+            hostname: instance-user-name@instance-public-dns-name #eg: ec2-user@ec2-xx.xxx.xxx.xxxx.ap-south-1.compute.amazonaws.com
             port: 22
         In the Category pane, expand Connection, SSH, and Auth. Choose Credentials
         Browse and select the downloaded keypair (.ppk) format
